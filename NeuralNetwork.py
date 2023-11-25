@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
@@ -65,4 +66,12 @@ print(f"Precisión en datos de prueba: {accuracy.numpy()}")
 # Guardar el modelo
 model.save("modelo_entrenado")
 
+# Obtener índices de instancias clasificadas incorrectamente
+incorrect_indices = np.where(np.argmax(y_test, axis=1) != np.argmax(predictions, axis=1))[0]
 
+# Visualizar algunas instancias incorrectamente clasificadas
+for idx in incorrect_indices[:]:
+    predicted_label = label_encoder.inverse_transform([np.argmax(predictions[idx])])[0]
+    true_label = label_encoder.inverse_transform([np.argmax(y_test[idx])])[0]
+    
+    print(f"Instancia {idx}: Predicho: {predicted_label}, Real: {true_label}")
